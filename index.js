@@ -2,6 +2,9 @@ const { token } = require("./config.json");
 const fs = require("node:fs");
 const path = require("node:path");
 const { Client, Collection, GatewayIntentBits, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
+const mongoDb = require("./mongoDB.js")
+
+
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] });
 
@@ -39,17 +42,16 @@ for (const file of eventFiles) {
 
 const init = async () => {
 
-    client.login(token);
+    await mongoDb.connectDb();
+    await client.login(token);
 
     await sleep(1000);
     const channels = client.channels.cache
     for (const channel of channels) {
         if (channel[1].name === "general") {
             const messages = await channel[1].messages.fetch({ limit: 100 })
-            console.log(`Received ${messages.size} messages`);
-            if(isInitiated(messages))
-            {
-               return; 
+            if (isInitiated(messages)) {
+                return;
             }
 
             const buyer = new ButtonBuilder()
@@ -86,11 +88,8 @@ const sleep = (ms) => {
 }
 
 const isInitiated = (messages) => {
-    for(const [key,value] of messages){
-
-        console.log(value.author.bot)
-        if(value.author.bot && value.author.username === "GDKP Manager")
-        {
+    for (const [key, value] of messages) {
+        if (value.author.bot && value.author.username === "GDKP Manager") {
             return true;
         }
     }

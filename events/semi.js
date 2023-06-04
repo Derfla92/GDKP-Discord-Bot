@@ -1,4 +1,5 @@
 const { Events, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = require("discord.js");
+const mongoDb = require("./../mongoDB.js")
 
 module.exports = {
     name: Events.InteractionCreate,
@@ -9,6 +10,12 @@ module.exports = {
                 const modal = new ModalBuilder()
                     .setCustomId("semiModal")
                     .setTitle("Semi");
+                    
+                const name = new TextInputBuilder()
+                    .setCustomId("name")
+                    .setLabel("What is your characters name?")
+                    .setStyle(TextInputStyle.Short)
+                    .setRequired(true);
 
                 const budget = new TextInputBuilder()
                     .setCustomId("budget")
@@ -25,19 +32,22 @@ module.exports = {
                     .setPlaceholder("4500+")
                     .setRequired(true);
 
-                const firstActionRow = new ActionRowBuilder().addComponents(budget);
-                const secondActionRow = new ActionRowBuilder().addComponents(gearScore);
+                const firstActionRow = new ActionRowBuilder().addComponents(name);
+                const secondActionRow = new ActionRowBuilder().addComponents(budget);
+                const thirdActionRow = new ActionRowBuilder().addComponents(gearScore);
 
-                modal.addComponents(firstActionRow,secondActionRow);
+                modal.addComponents(firstActionRow, secondActionRow, thirdActionRow);
 
                 await interaction.showModal(modal);
             }
         } else if (interaction.isModalSubmit()) {
             if (interaction.customId !== "semiModal") return;
-            const budgetResult = Number(interaction.fields.getTextInputValue("budget"))
-            console.log(budgetResult)
-            const gsResult = Number(interaction.fields.getTextInputValue("gearscore"))
-            console.log(gsResult)
+            const result = {
+                name: String(interaction.fields.getTextInputValue("name")),
+                budget: Number(interaction.fields.getTextInputValue("budget")),
+                gs: Number(interaction.fields.getTextInputValue("gearscore"))
+            }
+            await mongoDb.updateSemi(result.name,result.budget,result.gs);
             await interaction.reply({ content: "Your selection has been registered!", ephemeral: true })
         }
     }
