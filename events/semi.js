@@ -47,7 +47,7 @@ module.exports = {
                 budget: Number(interaction.fields.getTextInputValue("budget")),
                 gs: Number(interaction.fields.getTextInputValue("gearscore"))
             }
-            await mongoDb.updateSemi(result.name,result.budget,result.gs);
+            await mongoDb.updateSemi(interaction.user.id,result.name,result.budget,result.gs);
             await interaction.reply({ content: "Your selection has been registered!", ephemeral: true })
         }
     }

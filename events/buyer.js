@@ -35,7 +35,7 @@ module.exports = {
                 name : String(interaction.fields.getTextInputValue("name")),
                 budget : Number(interaction.fields.getTextInputValue("budget"))
             }
-            await mongoDb.updateBuyer(result.name,result.budget);
+            await mongoDb.updateBuyer(interaction.user.id,result.name,result.budget);
             await interaction.reply({ content: "Your selection has been registered!", ephemeral: true })
         }
     }

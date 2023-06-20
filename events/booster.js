@@ -40,7 +40,7 @@ module.exports = {
                 name: String(interaction.fields.getTextInputValue("name")),
                 gs: Number(interaction.fields.getTextInputValue("gearscore"))
             }
-            await mongoDb.updateBooster(result.name,result.gs);
+            await mongoDb.updateBooster(interaction.user.id,result.name,result.gs);
             await interaction.reply({ content: "Your selection has been registered!", ephemeral: true })
         }
     }

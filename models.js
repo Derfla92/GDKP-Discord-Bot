@@ -1,6 +1,10 @@
 const mongoose = require("mongoose")
 
 const BuyerSchema = new mongoose.Schema({
+    id: {
+        type: String,
+        required: true
+    },
     characterName: {
         type: String,
         required: true
@@ -12,6 +16,10 @@ const BuyerSchema = new mongoose.Schema({
 });
 
 const SemiSchema = new mongoose.Schema({
+    id: {
+        type: String,
+        required: true
+    },
     characterName: {
         type: String,
         required: true
@@ -27,6 +35,10 @@ const SemiSchema = new mongoose.Schema({
 });
 
 const BoosterSchema = new mongoose.Schema({
+    id: {
+        type: String,
+        required: true
+    },
     characterName: {
         type: String,
         required: true
