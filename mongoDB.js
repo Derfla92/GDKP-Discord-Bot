@@ -30,6 +30,7 @@ const updateBuyer = async (id, characterName, budget) => {
     }
 }
 const updateSemi = async (id, characterName, budget, gearScore) => {
+    console.log("Tolo")
     await models.Buyer.deleteOne({ characterName: characterName });
     await models.Booster.deleteOne({ characterName: characterName });
     var semi = await models.Semi.findOne({ characterName: characterName });
